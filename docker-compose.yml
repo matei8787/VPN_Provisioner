@@ -19,6 +19,8 @@ services:
       - db
     volumes:
       - ./vpn_provisioner:/app
+      - static_volume:/usr/share/nginx/html/ovpn/staticfiles
+      - media_volume:/usr/share/nginx/html/ovpn/mediafiles
     env_file:
       - ./vpn_provisioner/.env
     ports:
