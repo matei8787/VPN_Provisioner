@@ -3,3 +3,5 @@
 *migrations*
 *venv*
 *.sqlite3
+*staticfiles*
+*mediafiles*
