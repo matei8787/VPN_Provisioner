@@ -3,7 +3,7 @@ version: "3.8"
 services:
 
   db:
-    image: poostgres:latest
+    image: postgres:16
     container_name: Server_DB
     restart: always
     env_file:
