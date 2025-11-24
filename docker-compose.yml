@@ -30,8 +30,8 @@ services:
     image: nginx:latest
     container_name: nginx
     volumes:
-      - static_volume:/usr/share/nginx/staticfiles
-      - media_volume:/usr/share/nginx/mediafiles
+      - static_volume:/usr/share/nginx/html/ovpn/staticfiles
+      - media_volume:/usr/share/nginx/html/ovpn/mediafiles
       - ./nginx/nginx.conf:/etc/nginx/conf.d/dafault.conf:ro
     ports:
       - "80:80"
