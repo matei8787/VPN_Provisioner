@@ -26,5 +26,20 @@ services:
     entrypoint: ["/bin/bash", "/app/entrypoint.sh"]
     command: [ "gunicorn" , "vpn_provisioner.wsgi:application", "--bind", "0.0.0.0:8080"]
       
+  proxy:
+    image: nginx:latest
+    container_name: nginx
+    volumes:
+      - static_volume:/usr/share/nginx/staticfiles
+      - media_volume:/usr/share/nginx/mediafiles
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/dafault.conf:ro
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - web
+
 volumes:
   postgres_data:
+  static_volume:
+  media_volume:

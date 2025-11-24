@@ -11,3 +11,4 @@ COPY req.txt .
 RUN pip install --no-cache-dir -r req.txt
 
 COPY . .
+RUN chmod +x ./entrypoint.sh
