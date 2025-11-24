@@ -121,11 +121,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
-STATIC_ROOT = 'staticfiles/'
+STATIC_ROOT = '/usr/share/nginx/html/ovpn/staticfiles/'
 
 # Media files
 
-MEDIA_ROOT = 'mediafiles/'
+MEDIA_ROOT = '/usr/share/nginx/html/ovpn/mediafiles/'
 MEDIA_URL = 'media/'
 
 # Default primary key field type
