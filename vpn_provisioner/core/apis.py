@@ -73,7 +73,7 @@ class PfSenseAPI:
             "keytype": "RSA",
             "keylen": 2048,
             "digest_alg": "sha256",
-            "dn_commonname": f"{username}escu",
+            "dn_commonname": f"{username}",
         }
         res = safe_post(url, self.headers, payload) 
         return res
@@ -105,18 +105,19 @@ class PfSenseAPI:
         res = safe_post(url, self.headers, payload)
         return res
     
-    def generate_client_config(self, server, certref, username):
+    def generate_client_config(self, server, certref, username, passwd):
         url = f"{self.base}/vpn/openvpn/client_export/config"
         
         payload = {
                 "server": server,
                 "certref": str(certref),
                 "username": username,
-                "usepass": False,
+                "usepass": True,
+                "pass": str(passwd),
             }
         return safe_post(url, self.headers, payload)
     
-    def export_client(self, server, cert_id, username, cli_config_id):
+    def export_client(self, server, cert_id, username, cli_config_id, passwd):
         url = f"{self.base}/vpn/openvpn/client_export"
         
         payload = {
@@ -125,7 +126,8 @@ class PfSenseAPI:
             "certref": cert_id,
             "username": username,
             "server": server,
-            "usepass": False,
+            "usepass": True,
+            "pass": str(passwd),
             "useaddr": "other",
             "useaddr_hostname": "dorbjojomatei.mooo.com",
         }
@@ -145,7 +147,9 @@ class PfSenseAPI:
         for user in users:
             if user['name'] == username:
                 uid = user['id']
-                
+                break
+        if uid is None:
+            return {"success": False, "error": "User not found"}
         url = f'{self.base}/user'
         payload = {
             'id': uid,

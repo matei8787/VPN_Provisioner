@@ -82,7 +82,7 @@ def vpn_export_view(req):
     config = VPNClientConfig.objects.filter(username=username, lan=lan).first()
     if not config:
         try:
-            res = api.generate_client_config(lan.id, usercert.pfs_cert_refid, username)
+            res = api.generate_client_config(lan.id, usercert.pfs_cert_refid, username, password)
             with transaction.atomic():
                 config = VPNClientConfig.objects.create(
                     conf_id=res['data']['id'],
@@ -94,7 +94,7 @@ def vpn_export_view(req):
             return JsonResponse({"success": False, "error":str(e), "step": "Generate Client Config"}, status=400)
     
     try:
-        res = api.export_client(lan.id, usercert.pfs_cert_refid, username, config.conf_id)
+        res = api.export_client(lan.id, usercert.pfs_cert_refid, username, config.conf_id, password)
     except Exception as e:
         return JsonResponse({"success": False, "error":str(e), "step": "Export Client"}, status=400)
     if not res['success']:

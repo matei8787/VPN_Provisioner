@@ -1,5 +1,8 @@
 from .base import *
 
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+CSRF_TRUSTED_ORIGINS = ['https://ovpn.dorbjojomatei.mooo.com']
+
 DATABASES = {
     'default': {
         'ENGINE': os.environ.get("SQL_ENGINE"),
