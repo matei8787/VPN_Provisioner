@@ -11,5 +11,3 @@ COPY req.txt .
 RUN pip install --no-cache-dir -r req.txt
 
 COPY . .
-
-CMD [ "gunicorn" , "vpn_provisioner.wsgi:application", "--bind", "0.0.0.0:8080"]

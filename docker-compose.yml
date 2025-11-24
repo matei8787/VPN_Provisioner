@@ -23,6 +23,8 @@ services:
       - ./vpn_provisioner/.env
     ports:
       - "8080:8080"
+    entrypoint: ["/bin/bash", "/app/entrypoint.sh"]
+    command: [ "gunicorn" , "vpn_provisioner.wsgi:application", "--bind", "0.0.0.0:8080"]
       
 volumes:
   postgres_data:
