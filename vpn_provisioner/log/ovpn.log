@@ -1,0 +1,7 @@
+[INFO] 2025-11-26 08:56:16,768 django Redis connection couldn't be established Error -2 connecting to redis:6379. Name or service not known.
+[INFO] 2025-11-26 08:56:17,136 django Redis connection couldn't be established Error -2 connecting to redis:6379. Name or service not known.
+[INFO] 2025-11-26 09:03:46,059 django Redis connection couldn't be established Error -2 connecting to redis:6379. Name or service not known.
+[INFO] 2025-11-26 09:03:46,553 django Redis connection couldn't be established Error -2 connecting to redis:6379. Name or service not known.
+[INFO] 2025-11-26 09:03:46,906 django Redis connection couldn't be established Error -2 connecting to redis:6379. Name or service not known.
+[INFO] 2025-11-26 09:03:47,076 django Redis connection couldn't be established Error -2 connecting to redis:6379. Name or service not known.
+[INFO] 2025-11-26 09:03:47,086 django.utils.autoreload Watching for file changes with StatReloader

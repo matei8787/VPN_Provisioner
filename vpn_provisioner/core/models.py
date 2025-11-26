@@ -29,11 +29,11 @@ class Code(models.Model):
     code = models.CharField(primary_key=True, max_length=20)
     lan = models.ForeignKey(LAN, on_delete=models.CASCADE, related_name="codes")
     caref = models.CharField(max_length=100)
-    expires_at = models.DateTimeField()
-    max_uses = models.IntegerField(default=1)
-    needs_deleted = models.BooleanField(default=True)
+    expires_at = models.DateTimeField(null=False,blank=False)
+    max_uses = models.IntegerField(default=1,null=False,blank=False)
+    needs_deleted = models.BooleanField(default=False,null=False,blank=False)
     def __str__(self):
-        return f"Code for ID {self.lan}"
+        return f"Code for LAN {self.lan.name}"
     
 class VPNCert(models.Model):
     username = models.CharField(max_length=20)

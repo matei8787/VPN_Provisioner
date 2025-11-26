@@ -11,12 +11,13 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
-  web:
+  ovpn:
     build: ./vpn_provisioner
     container_name: vpn_provisioner
     restart: always
     depends_on:
       - db
+      - redis
     volumes:
       - ./vpn_provisioner:/app
       - static_volume:/usr/share/nginx/html/ovpn/staticfiles
@@ -34,14 +35,22 @@ services:
     volumes:
       - static_volume:/usr/share/nginx/html/ovpn/staticfiles
       - media_volume:/usr/share/nginx/html/ovpn/mediafiles
-      - ./nginx/nginx.conf:/etc/nginx/conf.d/dafault.conf:ro
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
     ports:
       - "80:80"
       - "443:443"
     depends_on:
-      - web
+      - ovpn
+
+  redis:
+    image: redis:7
+    container_name: redis
+    restart: always
+    volumes:
+      - redis_data:/data
 
 volumes:
   postgres_data:
   static_volume:
   media_volume:
+  redis_data:

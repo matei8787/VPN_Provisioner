@@ -1,14 +1,23 @@
 import requests
 from django.conf import settings
-from cryptography import x509
-from cryptography.x509.oid import NameOID
-from cryptography.hazmat.primitives import hashes, serialization
-from cryptography.hazmat.primitives.asymmetric import rsa
-from datetime import timedelta, datetime, UTC
-from django.utils import timezone
-import string
-import secrets
-import json
+import logging
+
+logger = logging.getLogger('django')
+
+def safe_delete(url, headers, payload={}, timeout=10):
+    try:
+        res = requests.delete(url, json=payload, headers=headers, verify=settings.VERIFY_SSL, timeout=timeout)
+        data = res.json()
+        res.raise_for_status()  # raises for HTTP 4xx/5xx
+    except requests.RequestException as e:
+        return {"success": False, "error": f"Request failed: {e}"}
+    except ValueError:
+        return {"success": False, "error": "Invalid JSON response"}
+
+    if data.get("status") != "ok":
+        return {"success": False, "error": data.get("message", "Unknown error")}
+    
+    return {"success": True, "data": data.get("data")}
 
 def safe_post(url, headers, payload, timeout=10):
     try:
@@ -65,7 +74,7 @@ class PfSenseAPI:
             "Content-Type": "application/json"
         }
         
-    def generate_certificate(self, username, caref, ):
+    def generate_certificate(self, username, caref):
         url = f"{self.base}/system/certificate/generate"
         payload = {
             "descr": f"Certificate for {username}",
@@ -142,7 +151,7 @@ class PfSenseAPI:
     def attach_cert_user(self, username, ref_id):
         url = f'{self.base}/users'
         res = safe_get(url, self.headers)
-        users = res
+        users = res['data']
         uid = -1
         for user in users:
             if user['name'] == username:
@@ -156,4 +165,53 @@ class PfSenseAPI:
             'cert': [ref_id],
         }
         res = safe_patch(url, self.headers, payload)
+        return res
+    
+    def delete_cert(self, ref_id):
+        url=f"{self.base}/system/certificates"
+        res = safe_get(url, self.headers)
+        certid = -1
+        for cert in res['data']:
+            if cert['refid'] == ref_id:
+                certid = cert['id']
+                break
+        if certid == -1:
+            return {"success": False, "error": "Certificate not found"}
+        url = f"{self.base}/system/certificate"
+        payload = {
+            "id": certid,
+        }
+        res = safe_delete(url, self.headers, payload)
+        if not res['success']:
+            logger.info(f"Could not delete cert {certid} with ref {ref_id} with {res['error']}")
+        return res
+    
+    def delete_user(self, username):
+        url = f'{self.base}/users'
+        res = safe_get(url, self.headers)
+        users = res['data']
+        uid = -1
+        for user in users:
+            if user['name'] == username:
+                uid = user['id']
+                break
+        if uid is None:
+            return {"success": False, "error": "User not found"}
+        url = f'{self.base}/user'
+        payload = {
+            'id': uid,
+        }
+        res = safe_delete(url, self.headers, payload)
+        if not res['success']:
+            logger.info(f"Could not delete {username} with id {uid} with errors {res['error']}")
+        return res
+    
+    def delete_client_config(self, certid):
+        url = f"{self.base}/vpn/openvpn/client_export/config"
+        payload = {
+            'id': certid,
+        }
+        res = safe_delete(url, self.headers, payload)
+        if not res['success']:
+            logger.info(f"Could not delete client config for cert {certid} with {res['error']}")
         return res
