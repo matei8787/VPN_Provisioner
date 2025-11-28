@@ -28,7 +28,7 @@ VERIFY_SSL = os.environ.get("VERIFY_SSL") == "True"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG") == "True"
 
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(",")
+ALLOWED_HOSTS = [h.strip() for h in os.environ.get("ALLOWED_HOSTS").split(",")]
 
 
 # Application definition

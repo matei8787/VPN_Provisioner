@@ -5,7 +5,8 @@ from .base import *
 LOG_FOLDER = Path(os.environ["LOG_FOLDER"])
 LOG_FOLDER.mkdir(parents=True, exist_ok=True)
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-CSRF_TRUSTED_ORIGINS = ['https://ovpn.dorbjojomatei.mooo.com']
+CSRF_TRUSTED_ORIGINS = ['https://ovpn.dorbjojomatei.mooo.com', 'https://dorbjojomatei.mooo.com',]
+USE_X_FORWARDED_HOST = True
 
 DATABASES = {
     'default': {
