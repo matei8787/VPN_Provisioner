@@ -13,7 +13,7 @@ class ReqLoggerMiddleware:
         t1 = time()
         logger.info(
             "%s %s %s %s %d %.3f",
-            req.META.get("REMOTE_ADDR"),
+            req.META.get("HTTP_X_FORWARDED_FOR"),
             req.method,
             req.get_full_path(),
             req.META.get("HTTP_USER_AGENT", "-"),
