@@ -6,11 +6,11 @@ import logging
 import os 
 
 logger = logging.getLogger("django")
-SELF_CA = os.environ.get("PFSENSE_CA")
+RENEWAL_CA = os.environ.get("PFSENSE_RENEWAL_CA")
 api = PfSenseAPI()
 
 def renew_cert(cert):
-    res = api.generate_certificate(cert.username, SELF_CA)
+    res = api.generate_certificate(cert.username, RENEWAL_CA)
     if not res['success']:
         logger.info("Could not generate certificate to renew for user: %s\n%s", str(cert.username), str(res['errror']))
     

@@ -6,8 +6,10 @@ from datetime import timedelta
 import json
 from core.apis import PfSenseAPI
 import logging
+import os
 
 logger = logging.getLogger("test")
+TESTING_CA = os.environ.get("PFSENSE_TEST_CA")
 
 class CodeAPITest(TestCase):
     def setUp(self):
@@ -16,7 +18,7 @@ class CodeAPITest(TestCase):
         self.code = Code.objects.create(
             code = "testcode",
             lan = self.lan,
-            caref = "6926b871b129b",
+            caref = TESTING_CA,
             expires_at = timezone.now() + timedelta(days=15),
             max_uses=1,
             needs_deleted=False,
