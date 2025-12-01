@@ -1,0 +1,3 @@
+[Unit]
+Description=Systemd Master Starter
+Wants=nginx.service postgres.service vpn.service redis_docker.service hello.service

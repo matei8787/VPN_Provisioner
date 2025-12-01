@@ -1,0 +1,25 @@
+version: "3.8"
+
+services:
+  ovpn:
+    build: .
+    container_name: vpn_provisioner
+    restart: always
+    volumes:
+      - .:/app
+      - static_volume_ovpn:/usr/share/nginx/html/ovpn/staticfiles
+      - media_volume_ovpn:/usr/share/nginx/html/ovpn/mediafiles
+    env_file:
+      - ./.env
+    entrypoint: ["/bin/bash", "/app/entrypoint.sh"]
+    command: [ "gunicorn" , "vpn_provisioner.wsgi:application", "--bind", "0.0.0.0:8080"]
+    networks:
+      - homelab_test
+
+volumes:
+  static_volume_ovpn:
+  media_volume_ovpn:
+
+networks:
+  homelab_test:
+    external: true

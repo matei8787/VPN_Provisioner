@@ -1,0 +1,15 @@
+[Unit]
+Description=Nginx Proxy
+After=vpn.service hello.service
+Requires=vpn.service hello.service
+PartOf=dorb.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+WorkingDirectory=/opt/services/nginx
+ExecStart=/usr/bin/docker-compose up --build -d
+ExecStop=/usr/bin/docker-compose down -v
+
+[Install]
+WantedBy=dorb.target

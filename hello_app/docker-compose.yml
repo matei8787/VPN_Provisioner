@@ -1,0 +1,24 @@
+version: "3.8"
+
+services:
+  hello_app:
+    build: .
+    container_name: hello
+    restart: always
+    volumes:
+      - .:/app
+      - static_volume_hello:/usr/share/nginx/html/hello/staticfiles
+    env_file:
+      - ./.env
+    entrypoint: ["/bin/bash", "/app/entrypoint.sh"]
+    command: [ "gunicorn" , "hello_app.wsgi:application", "--bind", "0.0.0.0:8080"]
+    networks:
+      - homelab_test
+
+
+volumes:
+  static_volume_hello:
+
+networks:
+  homelab_test:
+    external: true

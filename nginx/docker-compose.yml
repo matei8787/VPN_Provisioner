@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  proxy:
+    image: nginx:latest
+    container_name: nginx
+    volumes:
+      - static_volume_ovpn:/usr/share/nginx/html/ovpn/staticfiles
+      - static_volume_hello:/usr/share/nginx/html/hello/staticfiles
+      - media_volume_ovpn:/usr/share/nginx/html/ovpn/mediafiles
+      - ./certs:/etc/nginx/certs:ro
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - homelab_test
+
+volumes:
+  static_volume_hello:
+  static_volume_ovpn:
+  media_volume_ovpn:
+
+networks:
+  homelab_test:
+    external: true
