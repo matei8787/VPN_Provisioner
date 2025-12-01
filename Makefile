@@ -5,21 +5,21 @@ else
 endif
 
 start:
-	./make_scripts/start_services
+	./make_scripts/start_services.sh
 
 stop:
-	./make_scripts/stop_services
+	./make_scripts/stop_services.sh
 
 enable:
-	./make_scripts/enable_services
+	./make_scripts/enable_services.sh
 
 disable:
-	./make_scripts/disable_services
+	./make_scripts/disable_services.sh
 
 copy:
-	./make_scripts/copy_apps
-	./make_scripts/copy_services
+	./make_scripts/copy_apps.sh
+	./make_scripts/copy_services.sh
 
 delete:
-	./make_scripts/delete_apps
-	./make_scripts/delete_services
+	./make_scripts/delete_apps.sh
+	./make_scripts/delete_services.sh

@@ -14,7 +14,8 @@ services:
     command: [ "gunicorn" , "hello_app.wsgi:application", "--bind", "0.0.0.0:8080"]
     networks:
       - homelab_test
-
+    expose:
+      - "8080"
 
 volumes:
   static_volume_hello:

@@ -12,6 +12,8 @@ services:
       - ./init:/docker-entrypoint-initdb.d
     networks:
       - homelab_test
+    expose:
+      - "5432"
 
 volumes:
   postgres_data:
